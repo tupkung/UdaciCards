@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar } from 'react-native';
-import DeckNavigator from './navigators/DeckNavigator';
-import NewDeckContainer from './containers/NewDeckContainer';
+import HomeNavigator from './navigators/HomeNavigator';
 import { Constants } from 'expo';
 
 const UdaciCardStatusBar = ({ backgroundColor, ...props }) => (
@@ -20,7 +19,7 @@ export default class App extends React.Component {
           backgroundColor="blue"
           barStyle="light-content"
         />
-        <DeckNavigator/>
+        <HomeNavigator/>
       </View>
     );
   }

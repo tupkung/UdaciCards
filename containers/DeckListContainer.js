@@ -20,7 +20,7 @@ export default class DeckListContainer extends Component {
                     <ListView
                         dataSource={this.state.dataSource}
                         renderRow={(rowData) => 
-                        <TouchableOpacity onPress={()=>{}}>
+                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("IndividualDeck")}}>
                             <View style={styles.card}>
                                 <View style={styles.cardContent}>
                                     <Text style={styles.cardTitle}>{rowData.title}</Text>

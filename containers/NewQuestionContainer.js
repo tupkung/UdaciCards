@@ -1,19 +1,29 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, TextInput} from 'react-native';
 
-export default class NewDeckContainer extends Component {
+export default class NewQuestionContainer extends Component {
+
+    constructor(props){
+        super(props);
+        this.onPressSubmit = this.onPressSubmit.bind(this);
+    }
+
+    onPressSubmit(){
+        this.props.navigation.goBack();
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.content}>
-                    <Text style={styles.question}>What is the title of your new deck?</Text>
-                    <TextInput placeholder="Deck Title" style={styles.deckTitleInput}/>
-                    <TouchableOpacity style={styles.button} onPress={()=>{this.props.navigation.goBack();}}>
+                    <TextInput placeholder="Question" style={styles.input} value={"What is a component?"}/>
+                    <TextInput placeholder="Answer" style={styles.input} value={""}/>
+                    <TouchableOpacity style={styles.button} onPress={this.onPressSubmit}>
                         <Text style={styles.buttonText}>Submit</Text>
                     </TouchableOpacity>
                 </View>
             </View>
-        );
+        )
     }
 }
 
@@ -29,12 +39,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         flexDirection: "column",
     },
-    question: {
-        fontWeight: "bold",
-        fontSize: 52,
-        textAlign: "center"
-    },
-    deckTitleInput: {
+    input: {
         marginTop: 10,
         padding: 5,
         width: "80%",
@@ -45,7 +50,8 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.8,
-        shadowRadius: 5
+        shadowRadius: 5,
+        fontSize: 18
     },
     button: {
         width: "60%",

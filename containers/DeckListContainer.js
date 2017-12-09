@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, ListView, TouchableOpacity} from 'react-native';
+import {connect} from 'react-redux';
+import actions from '../actions';
 
-export default class DeckListContainer extends Component {
+class DeckListContainer extends Component {
 
     constructor(props){
         super(props);
@@ -80,3 +82,16 @@ const styles = StyleSheet.create({
         fontSize: 48
     }
 });
+
+const mapStateToProps = ({decks}) => ({
+    decksList: decks.dataCollection
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    loadDecks: () => dispatch(actions.loadDecks())
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DeckListContainer);

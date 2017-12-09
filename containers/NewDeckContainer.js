@@ -1,14 +1,51 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
+import {connect} from 'react-redux';
+import actions from '../actions';
 
-export default class NewDeckContainer extends Component {
+class NewDeckContainer extends Component {
+
+    constructor(props){
+        super(props);
+        this.onSubmitClick = this.onSubmitClick.bind(this);
+        this.onChangeTitle = this.onChangeTitle.bind(this);
+        this.state = {
+            title: ""
+        }
+    }
+
+    componentDidMount() {
+        const {clearDeck} = this.props;
+        clearDeck();
+    }
+
+    componentDidUpdate(prevProps, nextProps) {
+        if(this.props.isCreated) {
+            this.props.navigation.goBack();
+        }
+    }
+
+    onSubmitClick() {
+        const {createDeck} = this.props;
+        createDeck({
+            title: this.state.title,
+            cardNumber: 0
+        });
+    }
+
+    onChangeTitle(text) {
+        this.setState({
+            title: text
+        });
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.content}>
                     <Text style={styles.question}>What is the title of your new deck?</Text>
-                    <TextInput placeholder="Deck Title" style={styles.deckTitleInput}/>
-                    <TouchableOpacity style={styles.button} onPress={()=>{this.props.navigation.goBack();}}>
+                    <TextInput placeholder="Deck Title" style={styles.deckTitleInput} onChangeText={this.onChangeTitle}/>
+                    <TouchableOpacity style={styles.button} onPress={this.onSubmitClick}>
                         <Text style={styles.buttonText}>Submit</Text>
                     </TouchableOpacity>
                 </View>
@@ -68,3 +105,14 @@ const styles = StyleSheet.create({
         fontSize: 28
     }
 });
+
+const mapStateToProps = ({decks}) => ({
+    isCreated: decks.uiState.isCreatedNewDeck
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    createDeck: (newDeck) => dispatch(actions.createDeck(newDeck)),
+    clearDeck: () => dispatch(actions.clearNewDeck())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewDeckContainer);

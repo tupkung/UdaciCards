@@ -1,14 +1,18 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
-export default class IndividualDeckContainer extends Component {
+
+class IndividualDeckContainer extends Component {
 
     constructor(props){
         super(props);
 
         this.onPressAddCard = this.onPressAddCard.bind(this);
         this.onPressStartQuiz = this.onPressStartQuiz.bind(this);
+    
     }
+
+    
 
     onPressAddCard() {
         this.props.navigation.navigate("NewQuestion");
@@ -18,7 +22,7 @@ export default class IndividualDeckContainer extends Component {
         this.props.navigation.navigate("Quiz");
     }
 
-    onPressStart
+
 
     render() {
         return (
@@ -80,3 +84,7 @@ const styles = StyleSheet.create({
         fontSize: 28
     }
 })
+
+
+
+export default IndividualDeckContainer;

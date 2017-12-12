@@ -12,20 +12,33 @@ class DeckListContainer extends Component {
             dataSource: ds.cloneWithRows([{title: "udacicards", cardNumber: 3, createTime: new Date().getTime()}, {title: "new deck", cardNumber: 0, createTime: new Date().getTime()}, {title: "New deck2", cardNumber: 0, createTime: new Date().getTime()}])
         }
     }
+
+    componentDidMount() {
+        const {loadDecks} = this.props;
+        loadDecks();
+    }
+
+    onCardPress(rowId) {
+        this.props.navigation.navigate("IndividualDeck",{rowId: rowId});
+    }
+
     render() {
+        const {decksList} = this.props;
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.createTime !== r2.createTime});
+        const dataSource =  ds.cloneWithRows(decksList)
         return (
             <View style={{flex:1}}>
                 
-                {(this.state.dataSource.getRowCount() <= 0)?
+                {(dataSource.getRowCount() <= 0)?
                     <View style={styles.noCard}><Text style={styles.noCardText}>No Cards</Text></View>
                     : 
                     <ListView
-                        dataSource={this.state.dataSource}
-                        renderRow={(rowData) => 
-                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("IndividualDeck")}}>
+                        dataSource={dataSource}
+                        renderRow={(rowData, sectionId, rowId) => 
+                        <TouchableOpacity onPress={()=>{this.onCardPress(rowId)}}>
                             <View style={styles.card}>
                                 <View style={styles.cardContent}>
-                                    <Text style={styles.cardTitle}>{rowData.title}</Text>
+                                    <Text style={styles.cardTitle}>{rowData.title} </Text>
                                     <Text style={styles.cardNumber}>{rowData.cardNumber} cards</Text>
                                 </View>
                             </View>

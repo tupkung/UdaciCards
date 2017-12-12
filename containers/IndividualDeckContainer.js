@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-
+import {connect} from 'react-redux';
+import actions from '../actions';
 
 class IndividualDeckContainer extends Component {
 
@@ -12,6 +13,11 @@ class IndividualDeckContainer extends Component {
     
     }
 
+    componentDidMount() {
+        const {navigation, loadDeck} = this.props;
+        const {rowId} = navigation.state.params;
+        loadDeck(rowId);
+    }
     
 
     onPressAddCard() {
@@ -23,23 +29,27 @@ class IndividualDeckContainer extends Component {
     }
 
 
-
     render() {
+        const {deckData} = this.props;
         return (
-            <View style={{flex:1}}>
-                <View style={styles.content}>
-                    <Text style={styles.contentText}>udacicards</Text>
-                    <Text style={styles.contentCardNumber}>3 cards</Text>
+            deckData?
+                <View style={{flex:1}}>
+                    <View style={styles.content}>
+                        <Text style={styles.contentText}>{deckData.title}</Text>
+                        <Text style={styles.contentCardNumber}>{deckData.cardNumber} cards</Text>
+                    </View>
+                    <View style={styles.buttonGroup}>
+                        <TouchableOpacity style={styles.button} onPress={this.onPressAddCard}>
+                            <Text style={styles.buttonText}>Add Card</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button} onPress={this.onPressStartQuiz}>
+                            <Text style={styles.buttonText}>Start Quiz</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View style={styles.buttonGroup}>
-                    <TouchableOpacity style={styles.button} onPress={this.onPressAddCard}>
-                        <Text style={styles.buttonText}>Add Card</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={this.onPressStartQuiz}>
-                        <Text style={styles.buttonText}>Start Quiz</Text>
-                    </TouchableOpacity>
+                :
+                <View>
                 </View>
-            </View>
         )
     }
 }
@@ -83,8 +93,18 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 28
     }
-})
+});
+
+const mapStateToProps = ({decks}) => ({
+    deckData: decks.data
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    loadDeck: (createTime) => dispatch(actions.loadIndividualDeck(createTime))
+});
 
 
-
-export default IndividualDeckContainer;
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(IndividualDeckContainer);

@@ -17,6 +17,9 @@ class NewDeckContainer extends Component {
     componentDidMount() {
         const {clearDeck} = this.props;
         clearDeck();
+        this.setState({
+            title: ""
+        });
     }
 
     componentDidUpdate(prevProps, nextProps) {
@@ -27,9 +30,14 @@ class NewDeckContainer extends Component {
 
     onSubmitClick() {
         const {createDeck} = this.props;
+        
         createDeck({
             title: this.state.title,
-            cardNumber: 0
+            cardNumber: 0,
+            createTime: new Date().getTime()
+        });
+        this.setState({
+            title: ""
         });
     }
 
@@ -44,7 +52,7 @@ class NewDeckContainer extends Component {
             <View style={styles.container}>
                 <View style={styles.content}>
                     <Text style={styles.question}>What is the title of your new deck?</Text>
-                    <TextInput placeholder="Deck Title" style={styles.deckTitleInput} onChangeText={this.onChangeTitle}/>
+                    <TextInput placeholder="Deck Title" style={styles.deckTitleInput} onChangeText={this.onChangeTitle} value={this.state.title}/>
                     <TouchableOpacity style={styles.button} onPress={this.onSubmitClick}>
                         <Text style={styles.buttonText}>Submit</Text>
                     </TouchableOpacity>

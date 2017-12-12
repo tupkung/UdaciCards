@@ -29,3 +29,11 @@ export function loadDecks() {
                 }
             });
 }
+
+export function loadDeck(rowId) {
+    return AsyncStorage.getItem(FLASH_CARDS_KEY)
+            .then((str) => {
+                const data = JSON.parse(str);
+                return data.decks[rowId];
+            })
+}

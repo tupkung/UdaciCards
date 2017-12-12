@@ -17,6 +17,11 @@ export function decks(state=defaultState, action){
                     isCreatedNewDeck: true
                 }
             };
+        case actionType.LOAD_DECK:
+            return {
+                ...state,
+                data: action.data
+            };
         case actionType.CLEAR_NEW_DECK:
             return {
                 ...state,

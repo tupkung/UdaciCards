@@ -5,6 +5,8 @@ export const LOAD_DECKS = 'LOAD_DECKS';
 export const LOAD_DECK = 'LOAD_DECK';
 export const NEW_DECK = 'NEW_DECK';
 export const CLEAR_NEW_DECK = 'CLEAR_NEW_DECK';
+export const NEW_QUESTION = 'NEW_QUESTION';
+export const CLEAR_NEW_QUESTION = 'CLEAR_NEW_QUESTION';
 
 // action creator
 export function createAction(actionType, data) {
@@ -43,4 +45,12 @@ export const loadIndividualDeck = (rowId) => dispatch => (
         .then(data => {
             dispatch(createAction(LOAD_DECK, data));
         })
-)
+);
+
+export const createQuestion = (rowId, question) => dispatch => (
+    api.createQuestion(rowId, question)
+        .then((question) => {
+            dispatch(createAction(NEW_QUESTION, question));
+            dispatch(createAction(CLEAR_NEW_QUESTION));
+        })
+);

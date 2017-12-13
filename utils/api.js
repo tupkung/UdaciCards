@@ -35,5 +35,22 @@ export function loadDeck(rowId) {
             .then((str) => {
                 const data = JSON.parse(str);
                 return data.decks[rowId];
+            });
+}
+
+export function createQuestion(rowId, question) {
+    return AsyncStorage.getItem(FLASH_CARDS_KEY)
+            .then((str) => {
+                const data = JSON.parse(str);
+                const deck = data.decks[rowId];
+                if(!deck.questions){
+                    deck.questions = [];
+                }
+                deck.questions.push(question);
+                deck.cardNumber = deck.questions.length;
+                return data;
             })
+            .then((data) => {
+                return AsyncStorage.setItem(FLASH_CARDS_KEY, JSON.stringify(data));
+            });
 }

@@ -21,11 +21,17 @@ class IndividualDeckContainer extends Component {
     
 
     onPressAddCard() {
-        this.props.navigation.navigate("NewQuestion");
+        const {navigation} = this.props;
+        const {rowId} = navigation.state.params;
+        navigation.navigate("NewQuestion", {rowId: rowId});
     }
 
     onPressStartQuiz() {
-        this.props.navigation.navigate("Quiz");
+        const {deckData} = this.props;
+        if(deckData.cardNumber > 0) {
+            this.props.navigation.navigate("Quiz");
+        }
+        
     }
 
 

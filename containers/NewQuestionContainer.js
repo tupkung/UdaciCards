@@ -1,23 +1,67 @@
 import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, TextInput} from 'react-native';
+import {connect} from 'react-redux';
+import actions from '../actions';
 
-export default class NewQuestionContainer extends Component {
+class NewQuestionContainer extends Component {
 
     constructor(props){
         super(props);
+        this.state = {
+            data: {
+                question: "",
+                answer: ""
+            }
+        };
         this.onPressSubmit = this.onPressSubmit.bind(this);
+        this.onChangeQuestion = this.onChangeQuestion.bind(this);
+        this.onChangeAnswer = this.onChangeAnswer.bind(this);
+    }
+
+    componentDidUpdate() {
+        if(this.props.uiState.isCreatedNewQuestion){
+            const {navigation} = this.props;
+            const {rowId} = navigation.state.params;
+            this.props.loadDeck(rowId);
+            this.props.loadDecks();
+            this.props.navigation.goBack();
+        }
     }
 
     onPressSubmit(){
-        this.props.navigation.goBack();
+        const {createNewQuestion, navigation} = this.props;
+        const {rowId} = navigation.state.params;
+        const {data} = this.state;
+        if(this.state.data.question !== "" && this.state.data.answer !== ""){
+            createNewQuestion(rowId, data);
+        }
+    }
+
+    onChangeQuestion(str) {
+        this.setState({
+            data: {
+                question: str
+            }
+        });
+    }
+
+    onChangeAnswer(str) {
+        this.setState({
+            data: {
+                answer: str
+            }
+        });
     }
 
     render() {
         return (
+            (this.props.uiState.isCreatedNewQuestion) ?
+            <View/>
+            :
             <View style={styles.container}>
                 <View style={styles.content}>
-                    <TextInput placeholder="Question" style={styles.input} value={"What is a component?"}/>
-                    <TextInput placeholder="Answer" style={styles.input} value={""}/>
+                    <TextInput placeholder="Question" style={styles.input} onChangeText={(str) => this.onChangeQuestion(str)} />
+                    <TextInput placeholder="Answer" style={styles.input} onChangeText={(str) => this.onChangeAnswer(str)} />
                     <TouchableOpacity style={styles.button} onPress={this.onPressSubmit}>
                         <Text style={styles.buttonText}>Submit</Text>
                     </TouchableOpacity>
@@ -74,3 +118,18 @@ const styles = StyleSheet.create({
         fontSize: 28
     }
 });
+
+const mapStateToProps = ({decks}) => ({
+    uiState: decks.uiState
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    createNewQuestion: (rowId, question) => dispatch(actions.createQuestion(rowId, question)),
+    loadDeck: (rowId) => dispatch(actions.loadIndividualDeck(rowId)),
+    loadDecks: () => dispatch(actions.loadDecks())
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(NewQuestionContainer);

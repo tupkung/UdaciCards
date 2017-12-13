@@ -97,7 +97,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({decks}) => ({
-    decksList: decks.dataCollection
+    decksList: decks.dataCollection,
+    uiState: decks.uiState
 });
 
 const mapDispatchToProps = (dispatch) => ({

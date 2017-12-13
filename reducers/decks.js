@@ -17,6 +17,20 @@ export function decks(state=defaultState, action){
                     isCreatedNewDeck: true
                 }
             };
+        case actionType.NEW_QUESTION:
+            return {
+                ...state,
+                uiState: {
+                    isCreatedNewQuestion: true
+                }
+            };
+        case actionType.CLEAR_NEW_QUESTION:
+            return {
+                ...state,
+                uiState: {
+                    isCreatedNewQuestion: false
+                }
+            };
         case actionType.LOAD_DECK:
             return {
                 ...state,

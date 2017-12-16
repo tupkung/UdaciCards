@@ -9,7 +9,8 @@ export default class QuizContainer extends Component {
         this.onPressInCorrectButton = this.onPressInCorrectButton.bind(this);
         this.flipCard = this.flipCard.bind(this);
         this.state = {
-            isPressAnswer: false
+            isPressAnswer: false,
+            questions: []
         };
     }
 
@@ -35,6 +36,14 @@ export default class QuizContainer extends Component {
         this.backOpacity = this.animatedValue.interpolate({
             inputRange: [89, 90],
             outputRange: [0, 1]
+        });
+    }
+
+    componentDidMount() {
+        const {navigation} = this.props;
+        const {questions} = navigation.state.params;
+        this.setState({
+            questions: questions
         });
     }
 

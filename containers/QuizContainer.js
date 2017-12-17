@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {View,Text,StyleSheet,TouchableOpacity, Animated} from 'react-native';
+import {clearLocalNotification, setLocalNotification} from '../utils/helpers';
 
 export default class QuizContainer extends Component {
 
@@ -57,12 +58,14 @@ export default class QuizContainer extends Component {
     onPressCorrectButton(){
         const {correctNumber, currentIndex} = this.state;
 
+        if(currentIndex === this.state.questions.length - 1) {
+            clearLocalNotification().then(setLocalNotification);
+        }
+
         this.setState({
             correctNumber: correctNumber + 1,
             currentIndex: currentIndex + 1
         });
-        
-        
     }
 
     onPressInCorrectButton(){

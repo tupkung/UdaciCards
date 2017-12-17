@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware, compose} from 'redux';
 import reducer from './reducers';
+import {setLocalNotification} from './utils/helpers';
 
 const store = createStore(
   reducer,
@@ -21,6 +22,9 @@ const UdaciCardStatusBar = ({ backgroundColor, ...props }) => (
 );
 
 export default class App extends React.Component {
+  componentDidMount() {
+    setLocalNotification();
+  }
   
   render() {
     return (

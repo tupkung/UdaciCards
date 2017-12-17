@@ -29,7 +29,7 @@ class IndividualDeckContainer extends Component {
     onPressStartQuiz() {
         const {deckData} = this.props;
         if(deckData.cardNumber > 0) {
-            this.props.navigation.navigate("Quiz"), {questions: deckData.questions};
+            this.props.navigation.navigate("Quiz", {questions: deckData.questions});
         }
         
     }

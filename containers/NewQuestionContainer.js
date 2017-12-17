@@ -32,22 +32,30 @@ class NewQuestionContainer extends Component {
         const {createNewQuestion, navigation} = this.props;
         const {rowId} = navigation.state.params;
         const {data} = this.state;
-        if(this.state.data.question !== "" && this.state.data.answer !== ""){
+        if(
+            this.state.data.question !== undefined
+            && this.state.data.answer !== undefined
+            && this.state.data.question !== "" 
+            && this.state.data.answer !== ""){
             createNewQuestion(rowId, data);
         }
     }
 
     onChangeQuestion(str) {
+        const {answer} = this.state.data;
         this.setState({
             data: {
-                question: str
+                question: str,
+                answer: answer
             }
         });
     }
 
     onChangeAnswer(str) {
+        const {question} = this.state.data;
         this.setState({
             data: {
+                question: question,
                 answer: str
             }
         });

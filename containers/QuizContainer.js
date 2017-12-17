@@ -7,10 +7,15 @@ export default class QuizContainer extends Component {
         super(props);
         this.onPressCorrectButton = this.onPressCorrectButton.bind(this);
         this.onPressInCorrectButton = this.onPressInCorrectButton.bind(this);
+        this.onPressBackButton = this.onPressBackButton.bind(this);
+        this.onPressRestartButton = this.onPressRestartButton.bind(this);
         this.flipCard = this.flipCard.bind(this);
         this.state = {
             isPressAnswer: false,
-            questions: []
+            questions: [],
+            correctNumber: 0,
+            inCorrectNumber: 0,
+            currentIndex: 0
         };
     }
 
@@ -43,16 +48,45 @@ export default class QuizContainer extends Component {
         const {navigation} = this.props;
         const {questions} = navigation.state.params;
         this.setState({
-            questions: questions
+            questions: questions,
+            correctNumber: 0,
+            inCorrectNumber: 0
         });
     }
 
     onPressCorrectButton(){
+        const {correctNumber, currentIndex} = this.state;
+
+        this.setState({
+            correctNumber: correctNumber + 1,
+            currentIndex: currentIndex + 1
+        });
+        
         
     }
 
     onPressInCorrectButton(){
+        const {inCorrectNumber, currentIndex} = this.state;
+
+        this.setState({
+            inCorrectNumber: inCorrectNumber + 1,
+            currentIndex: currentIndex + 1
+        });
         
+    }
+
+    onPressRestartButton() {
+        this.setState({
+            correctNumber: 0,
+            inCorrectNumber: 0,
+            currentIndex: 0
+        });
+    }
+
+    onPressBackButton() {
+        const {navigation} = this.props;
+
+        navigation.goBack();
     }
 
     flipCard() {
@@ -91,19 +125,21 @@ export default class QuizContainer extends Component {
         const backOpacityStyle = {
             opacity: this.backOpacity
         };
-        const {isPressAnswer} = this.state;
+        const {isPressAnswer, questions, currentIndex, correctNumber} = this.state;
+
         return(
+            (currentIndex < questions.length) ?
             <View style={styles.container}>
                 <View style={styles.cardNumber}>
-                    <Text style={styles.cardNumberText}>2/2</Text>
+                    <Text style={styles.cardNumberText}>{currentIndex + 1}/{questions.length}</Text>
                 </View>
                 <View style={styles.content}>
                     <Animated.View style={[styles.flipCard, frontAnimatedStyle, frontOpacityStyle]}>
-                        <Text style={styles.question}>What is the title of your new deck?</Text>
+                        <Text style={styles.question}>{questions[currentIndex].question}</Text>
                         
                     </Animated.View>
                     <Animated.View style={[backAnimatedStyle, styles.flipCard, styles.flipCardBack, backOpacityStyle ]}>
-                        <Text style={styles.question}>Yes!</Text>
+                        <Text style={styles.question}>{questions[currentIndex].answer}</Text>
                     </Animated.View>
                     <TouchableOpacity onPress={this.flipCard}>
                         <Text style={styles.answerText}>{isPressAnswer ? "Question" : "Answer"}</Text>
@@ -113,6 +149,23 @@ export default class QuizContainer extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.inCorrectButton} onPress={this.onPressInCorrectButton}>
                         <Text style={styles.inCorrectText}>Incorrect</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+            :
+            <View style={styles.container}>
+                <View style={styles.result}>
+                    <View>
+                        <Text style={styles.question}>Your score is </Text>
+                    </View>
+                    <View>
+                        <Text style={styles.scoreText}>{correctNumber}/{questions.length}</Text>
+                    </View>
+                    <TouchableOpacity style={styles.restartButton} onPress={this.onPressRestartButton}>
+                        <Text style={styles.buttonText}>Restart Quiz</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.backButton} onPress={this.onPressBackButton}>
+                        <Text style={styles.buttonText}>Back to Deck</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -150,6 +203,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "flex-start",
         flexDirection: "column",
+    },
+    result: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
     },
     question: {
         fontWeight: "bold",
@@ -205,5 +263,47 @@ const styles = StyleSheet.create({
     },
     questionText: {
         fontSize: 28
+    },
+    restartButton: {
+        width: "70%",
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 15,
+        height: 50,
+        borderWidth: 1,
+        borderRadius: 2,
+        backgroundColor: "#69c6e5",
+        opacity: 0.8,
+        borderColor: "#ddd",
+        borderBottomWidth: 0,
+        shadowColor: "#000",
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.8,
+        shadowRadius: 5
+    },
+    backButton: {
+        width: "70%",
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 15,
+        height: 50,
+        borderWidth: 1,
+        borderRadius: 2,
+        backgroundColor: "#69c6e5",
+        opacity: 0.8,
+        borderColor: "#ddd",
+        borderBottomWidth: 0,
+        shadowColor: "#000",
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.8,
+        shadowRadius: 5
+    },
+    buttonText: {
+        fontSize: 28
+    },
+    scoreText: {
+        fontSize: 38,
+        color: "#c94c4c",
+        fontWeight: "bold"
     }
 });

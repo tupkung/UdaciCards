@@ -21,3 +21,9 @@ Run this command to see the application on development mode.
 ```
 npm start
 ```
+
+## Tested platform
+
+```
+Android & iOS
+```

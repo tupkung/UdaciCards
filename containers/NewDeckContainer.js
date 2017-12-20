@@ -55,7 +55,7 @@ class NewDeckContainer extends Component {
                     <Text style={styles.question}>What is the title of your new deck?</Text>
                     <TextInput placeholder="Deck Title" style={styles.deckTitleInput} onChangeText={this.onChangeTitle} value={this.state.title}/>
                     <TouchableOpacity style={styles.button} onPress={this.onSubmitClick}>
-                        <Text style={styles.buttonText}>Submit</Text>
+                        <Text style={styles.buttonText}>Create Deck</Text>
                     </TouchableOpacity>
                 </View>
             </View>

@@ -149,7 +149,7 @@ export default class QuizContainer extends Component {
                         <Text style={styles.question}>{questions[currentIndex].answer}</Text>
                     </Animated.View>
                     <TouchableOpacity onPress={this.flipCard}>
-                        <Text style={styles.answerText}>{isPressAnswer ? "Question" : "Answer"}</Text>
+                        <Text style={styles.answerText}>{isPressAnswer ? "Question" : "Show Answer"}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.correctButton} onPress={this.onPressCorrectButton}>
                         <Text style={styles.correctText}>Correct</Text>

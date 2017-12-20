@@ -46,7 +46,7 @@ class IndividualDeckContainer extends Component {
                     </View>
                     <View style={styles.buttonGroup}>
                         <TouchableOpacity style={styles.button} onPress={this.onPressAddCard}>
-                            <Text style={styles.buttonText}>Add Card</Text>
+                            <Text style={styles.buttonText}>Create New Question</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.button} onPress={this.onPressStartQuiz}>
                             <Text style={styles.buttonText}>Start Quiz</Text>

@@ -11,6 +11,8 @@ export default class QuizContainer extends Component {
         this.onPressBackButton = this.onPressBackButton.bind(this);
         this.onPressRestartButton = this.onPressRestartButton.bind(this);
         this.flipCard = this.flipCard.bind(this);
+        this.showFlipCard = this.showFlipCard.bind(this);
+        this.showScore = this.showScore.bind(this);
         this.state = {
             isPressAnswer: false,
             questions: [],
@@ -45,22 +47,26 @@ export default class QuizContainer extends Component {
         });
     }
 
+    componentWillUnmount() {
+        this.animatedValue.removeAllListeners();
+    }
+
     componentDidMount() {
+
         const {navigation} = this.props;
         const {questions} = navigation.state.params;
+
         this.setState({
             questions: questions,
             correctNumber: 0,
             inCorrectNumber: 0
         });
+
+        clearLocalNotification().then(setLocalNotification);
     }
 
     onPressCorrectButton(){
         const {correctNumber, currentIndex} = this.state;
-
-        if(currentIndex === this.state.questions.length - 1) {
-            clearLocalNotification().then(setLocalNotification);
-        }
 
         this.setState({
             correctNumber: correctNumber + 1,
@@ -111,7 +117,7 @@ export default class QuizContainer extends Component {
         });
     }
 
-    render() {
+    showFlipCard() {
         const frontAnimatedStyle = {
             transform: [
                 { rotateX: this.frontInterpolate}
@@ -128,10 +134,8 @@ export default class QuizContainer extends Component {
         const backOpacityStyle = {
             opacity: this.backOpacity
         };
-        const {isPressAnswer, questions, currentIndex, correctNumber} = this.state;
-
-        return(
-            (currentIndex < questions.length) ?
+        const {isPressAnswer, questions, currentIndex} = this.state;
+        return (
             <View style={styles.container}>
                 <View style={styles.cardNumber}>
                     <Text style={styles.cardNumberText}>{currentIndex + 1}/{questions.length}</Text>
@@ -155,7 +159,12 @@ export default class QuizContainer extends Component {
                     </TouchableOpacity>
                 </View>
             </View>
-            :
+        );
+    }
+
+    showScore() {
+        const {correctNumber, questions} = this.state;
+        return (
             <View style={styles.container}>
                 <View style={styles.result}>
                     <View>
@@ -172,6 +181,18 @@ export default class QuizContainer extends Component {
                     </TouchableOpacity>
                 </View>
             </View>
+        );
+    }
+
+    render() {
+        
+        const {currentIndex, questions} = this.state;
+
+        return(
+            (currentIndex < questions.length) ?
+                this.showFlipCard()
+            :
+                this.showScore()
         )
     }
 }

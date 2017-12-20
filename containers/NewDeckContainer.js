@@ -24,7 +24,8 @@ class NewDeckContainer extends Component {
 
     componentDidUpdate(prevProps, nextProps) {
         if(this.props.isCreated) {
-            this.props.navigation.goBack();
+            const {rowId, navigation} = this.props;
+            navigation.navigate("IndividualDeck",{rowId: rowId});
         }
     }
 
@@ -115,7 +116,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({decks}) => ({
-    isCreated: decks.uiState.isCreatedNewDeck
+    isCreated: decks.uiState.isCreatedNewDeck,
+    rowId: decks.uiState.newDeckKey
 });
 
 const mapDispatchToProps = (dispatch) => ({

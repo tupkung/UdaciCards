@@ -1,6 +1,11 @@
 import { AsyncStorage } from 'react-native';
 import {FLASH_CARDS_KEY} from './_flashcards';
 
+/**
+ * @description Create new deck
+ * @param {object} newDeck 
+ * @returns {promise} of new deck key
+ */
 export function createDeck(newDeck) {
     return AsyncStorage.getItem(FLASH_CARDS_KEY)
             .then((str) => {
@@ -14,10 +19,14 @@ export function createDeck(newDeck) {
                     data.decks[key] = newDeck;
                     AsyncStorage.setItem(FLASH_CARDS_KEY, JSON.stringify(data));
                 }
-                return newDeck;
+                return key;
             });
 }
 
+/**
+ * @description Load all decks
+ * @returns {array} of deck objects
+ */
 export function loadDecks() {
     return AsyncStorage.getItem(FLASH_CARDS_KEY)
             .then((str) => {
@@ -30,6 +39,11 @@ export function loadDecks() {
             });
 }
 
+/**
+ * @description load a deck by rowId
+ * @param {number} rowId 
+ * @returns {object} of a deck
+ */
 export function loadDeck(rowId) {
     return AsyncStorage.getItem(FLASH_CARDS_KEY)
             .then((str) => {
@@ -38,6 +52,12 @@ export function loadDeck(rowId) {
             });
 }
 
+/**
+ * @description create new Question with answer
+ * @param {number} rowId 
+ * @param {object} question 
+ * @returns {promise}
+ */
 export function createQuestion(rowId, question) {
     return AsyncStorage.getItem(FLASH_CARDS_KEY)
             .then((str) => {

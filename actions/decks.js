@@ -33,10 +33,13 @@ export const loadDecks = () => dispatch => (
 
 export const createDeck = (newDeck) => dispatch => (
     api.createDeck(newDeck)
-        .then(() => api.loadDecks())
-        .then(data => {
-            dispatch(createAction(NEW_DECK, newDeck));
+        .then((key) => {
+            dispatch(createAction(NEW_DECK, key));
+            return api.loadDecks();
+        })
+        .then(data=>{
             dispatch(createAction(LOAD_DECKS, data));
+            dispatch(createAction(CLEAR_NEW_DECK, {}));
         })
 );
 

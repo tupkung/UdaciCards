@@ -12,9 +12,9 @@ export function decks(state=defaultState, action){
         case actionType.NEW_DECK:
             return {
                 ...state,
-                newData: action.data,
                 uiState: {
-                    isCreatedNewDeck: true
+                    isCreatedNewDeck: true,
+                    newDeckKey: action.data
                 }
             };
         case actionType.NEW_QUESTION:

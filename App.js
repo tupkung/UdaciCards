@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
 import HomeNavigator from './navigators/HomeNavigator';
 import { Constants } from 'expo';
 import { Provider } from 'react-redux';
